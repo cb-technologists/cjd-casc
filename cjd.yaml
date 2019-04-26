@@ -85,6 +85,9 @@ spec:
       - name: cjd
         image: mattelgin/cjd-casc:0.1
         imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        - containerPort: 50000
         env:
         - name: CASC_JENKINS_CONFIG
           value: /var/jenkins_config/jenkins-casc.yaml
@@ -224,6 +227,8 @@ data:
   jenkins-casc.yaml: |
     jenkins:
       systemMessage: "Jenkins in Kubernetes configured as code!"
+      location:
+        url: http://cjd/
       clouds:
         - kubernetes:
             name: kubernetes
@@ -242,7 +247,6 @@ data:
         multibranchPipelineJob('cjd-casc') {
           branchSources {
             github {
-              # scanCredentialsId('github')
               repoOwner('mdelgin')
               repository('cjd-casc')
             }
