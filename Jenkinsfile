@@ -29,6 +29,9 @@ spec:
 """
     }
   }
+  environment {
+    COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
+  }
   stages {
     stage('Build with Kaniko') {
       environment {
@@ -36,10 +39,15 @@ spec:
       }
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
-          sh '''#!/busybox/sh
-                /kaniko/executor --context `pwd` --destination mattelgin/cjd-casc:latest
-          '''
+          sh """#!/busybox/sh
+                /kaniko/executor --context `pwd` --destination mattelgin/cjd-casc:${env.COMMIT_ID}
+          """
         }
+      }
+    }
+    stage('Update CJD image') {
+      steps {
+        sh 
       }
     }
   }
