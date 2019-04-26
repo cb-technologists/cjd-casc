@@ -108,28 +108,6 @@ spec:
       resources:
         requests:
           storage: 5Gi
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jenkins-casc
-data:
-  jenkins-casc.yaml: |
-    jenkins:
-      systemMessage: "Jenkins in Kubernetes configured as code!"
-      clouds:
-        - kubernetes:
-            name: kubernetes
-            containerCapStr: 100
-            templates:
-              - name: jnlp-agent
-                label: jnlp-agent-pod-template
-                containers:
-                  - name: jnlp-agent
-                    image: jenkins/jnlp-slave:latest
-                    ttyEnabled: true
-                    command: cat
-                    args: ""
 
 ---
 apiVersion: v1
@@ -236,3 +214,26 @@ data:
 
         exec java $JAVA_OPTS $JNLP_PROTOCOL_OPTS -cp $SLAVE_JAR hudson.remoting.jnlp.Main -headless $TUNNEL $URL $OPT_JENKINS_SECRET $OPT_JENKINS_AGENT_NAME "$@"
     fi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-casc
+data:
+  jenkins-casc.yaml: |
+    jenkins:
+      systemMessage: "Jenkins in Kubernetes configured as code!"
+      clouds:
+        - kubernetes:
+            name: kubernetes
+            containerCapStr: 100
+            templates:
+              - name: jnlp-agent
+                label: jnlp-agent-pod-template
+                containers:
+                  - name: jnlp-agent
+                    image: jenkins/jnlp-slave:latest
+                    ttyEnabled: true
+                    command: cat
+                    args: ""
