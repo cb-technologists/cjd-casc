@@ -237,3 +237,19 @@ data:
                     ttyEnabled: true
                     command: cat
                     args: ""
+    jobs:
+    - script: >
+        multibranchPipelineJob('cjd-casc') {
+          branchSources {
+            github {
+              # scanCredentialsId('github')
+              repoOwner('mdelgin')
+              repository('cjd-casc')
+            }
+          }
+          orphanedItemStrategy {
+            discardOldItems {
+              numToKeep(5)
+            }
+          }
+        }
