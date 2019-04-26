@@ -47,7 +47,7 @@ spec:
     }
     stage('Update CJD image') {
       steps {
-        sh 
+        // TODO
       }
     }
   }
