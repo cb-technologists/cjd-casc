@@ -1,17 +1,11 @@
 pipeline {
-  agent none
-  environment {
-    COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
-  }
-  stages {
-    stage('Build and Push with Kaniko') {
-      agent {
+  agent {
         kubernetes {
-          label "kaniko-${UUID.randomUUID().toString()}"
+          label "kaniko-kubectl-${UUID.randomUUID().toString()}"
           yaml """
 kind: Pod
 metadata:
-  name: kaniko
+  name: kaniko-kubectl
 spec:
   containers:
   - name: kaniko
@@ -23,6 +17,12 @@ spec:
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
+  - name: kubectl
+    image: lachlanevenson/k8s-kubectl:v1.11.2-bash
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -33,8 +33,13 @@ spec:
             - key: .dockerconfigjson
               path: config.json
 """
-        }
-      }
+    }
+  }
+  environment {
+    COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
+  }
+  stages {
+    stage('Build and Push with Kaniko') {
       environment {
         PATH = "/busybox:/kaniko:$PATH"
       }
@@ -47,24 +52,6 @@ spec:
       }
     }
     stage('Update CJD image') {
-      agent {
-        kubernetes {
-          label "kubectl-${UUID.randomUUID().toString()}"
-          yaml """
-kind: Pod
-metadata:
-  name: kubectl
-spec:
-  containers:
-  - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.11.2-bash
-    imagePullPolicy: Always
-    command:
-    - cat
-    tty: true
-"""
-        }
-      }
       steps {
         container('kubectl') {
           sh """
