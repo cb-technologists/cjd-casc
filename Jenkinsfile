@@ -1,4 +1,5 @@
 pipeline {
+  agent none
   environment {
     COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
   }
