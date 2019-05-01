@@ -1,8 +1,13 @@
 pipeline {
-  agent {
-    kubernetes {
-      label "kaniko-${UUID.randomUUID().toString()}" // "${pod-template-label}"
-      yaml """
+  environment {
+    COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
+  }
+  stages {
+    stage('Build and Push with Kaniko') {
+      agent {
+        kubernetes {
+          label "kaniko-${UUID.randomUUID().toString()}"
+          yaml """
 kind: Pod
 metadata:
   name: kaniko
@@ -27,13 +32,8 @@ spec:
             - key: .dockerconfigjson
               path: config.json
 """
-    }
-  }
-  environment {
-    COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
-  }
-  stages {
-    stage('Build with Kaniko') {
+        }
+      }
       environment {
         PATH = "/busybox:/kaniko:$PATH"
       }
@@ -46,8 +46,30 @@ spec:
       }
     }
     stage('Update CJD image') {
+      agent {
+        kubernetes {
+          label "kubectl-${UUID.randomUUID().toString()}"
+          yaml """
+kind: Pod
+metadata:
+  name: kubectl
+spec:
+  containers:
+  - name: kubectl
+    image: lachlanevenson/k8s-kubectl:v1.11.2-bash
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+"""
+        }
+      }
       steps {
-        echo "TODO"
+        container('kubectl') {
+          sh """
+            kubectl -n cjd patch statefulset cjd -p '{"spec":{"containers":[{"name":"cjd","image":"mattelgin/cjd-casc:${env.COMMIT_ID}"}]}}'
+          """
+        }
       }
     }
   }
