@@ -57,9 +57,18 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: cjd
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    certmanager.k8s.io/issuer: "letsencrypt-prod" # add after cert-manager deploy
+    certmanager.k8s.io/acme-challenge-type: http01 # add after cert-manager deploy
 spec:
+  tls: # cert-manager
+  - hosts: # cert-manager
+    - cjd.cloudbees.elgin.io # cert-manager
+    secretName: cjd-tls # cert-manager
   rules:
-  - http:
+  - host: cjd.cloudbees.elgin.io
+    http:
       paths:
       - path: /
         backend:
@@ -83,7 +92,7 @@ spec:
     spec:
       containers:
       - name: cjd
-        image: mattelgin/cjd-casc:0.1
+        image: mattelgin/cjd-casc:0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -227,26 +236,36 @@ data:
   jenkins-casc.yaml: |
     jenkins:
       systemMessage: "Jenkins in Kubernetes configured as code!"
-      location:
-        url: http://cjd/
       clouds:
-        - kubernetes:
-            name: kubernetes
-            containerCapStr: 100
-            templates:
-              - name: jnlp-agent
-                label: jnlp-agent-pod-template
-                containers:
-                  - name: jnlp-agent
-                    image: jenkins/jnlp-slave:latest
-                    ttyEnabled: true
-                    command: cat
-                    args: ""
+      - kubernetes:
+          name: kubernetes
+          containerCapStr: 100
+          templates:
+            - name: jnlp-agent
+              label: jnlp-agent-pod-template
+              containers:
+                - name: jnlp-agent
+                  image: jenkins/jnlp-slave:latest
+                  ttyEnabled: true
+                  command: cat
+                  args: ""
+    # location:
+    #   url: https://cjd.cloudbees.elgin.io
+    # credentials:
+    #   system:
+    #     domainCredentials:
+    #       credentials:
+    #       - string:
+    #           description: "GitHub API token"
+    #           id: "github"
+    #           scope: SYSTEM
+    #           secret: ${github}
     jobs:
     - script: >
         multibranchPipelineJob('cjd-casc') {
           branchSources {
             github {
+              
               repoOwner('mdelgin')
               repository('cjd-casc')
             }
