@@ -1,1 +1,0 @@
-kubectl create secret generic github --from-literal=username=${USERNAME} --from-literal=token=${TOKEN}

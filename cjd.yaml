@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
       - name: cjd
-        image: mattelgin/cjd-casc:0.4.12
+        image: mattelgin/cjd-casc:0.4.14
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

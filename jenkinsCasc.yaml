@@ -10,7 +10,7 @@ data:
         github:
           githubWebUri: "https://github.com"
           githubApiUri: "https://api.github.com"
-          clientID: "${CLIENT_ID"
+          clientID: "${CLIENT_ID}"
           clientSecret: "${CLIENT_SECRET}"
           oauthScopes: "read:org,user:email"
       systemMessage: "CJD in Kubernetes configured as code!"
