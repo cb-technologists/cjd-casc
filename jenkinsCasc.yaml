@@ -6,6 +6,13 @@ metadata:
 data:
   jenkins-casc.yaml: |
     jenkins:
+      securityRealm:
+        github:
+          githubWebUri: "https://github.com"
+          githubApiUri: "https://api.github.com"
+          clientID: "${CLIENT_ID"
+          clientSecret: "${CLIENT_SECRET}"
+          oauthScopes: "read:org,user:email"
       systemMessage: "CJD in Kubernetes configured as code!"
       clouds:
       - kubernetes:
@@ -20,6 +27,9 @@ data:
                   ttyEnabled: true
                   command: cat
                   args: ""
+      authorizationStrategy:
+        loggedInUsersCanDoAnything:
+          allowAnonymousRead: false
     credentials:
       system:
         domainCredentials:
@@ -46,3 +56,9 @@ data:
             }
           }
         }
+    security:
+      remotingCLI:
+        enabled: false
+    unclassified:
+      location:
+        url: {url}

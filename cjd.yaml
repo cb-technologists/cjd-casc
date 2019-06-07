@@ -103,6 +103,10 @@ spec:
         envFrom:
           - secretRef:
               name: github
+          - secretRef:
+              name: url
+          - secretRef:
+              name: github-oauth
         volumeMounts:
         - name: jenkins-home
           mountPath: /var/jenkins_home/
