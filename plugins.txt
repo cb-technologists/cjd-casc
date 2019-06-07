@@ -1,6 +1,7 @@
-configuration-as-code:1.19
-configuration-as-code-support:1.18
+configuration-as-code:1.20
 job-dsl:1.74
-kubernetes:1.15.6
+kubernetes:1.14.9
 kubernetes-credentials:0.4.0
 credentials:2.2.0
+workflow-multibranch:2.20
+github-branch-source:2.4.5

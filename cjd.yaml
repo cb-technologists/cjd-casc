@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
       - name: cjd
-        image: mattelgin/cjd-casc:0.2
+        image: mattelgin/cjd-casc:0.4.11
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -100,6 +100,9 @@ spec:
         env:
         - name: CASC_JENKINS_CONFIG
           value: /var/jenkins_config/jenkins-casc.yaml
+        envFrom:
+          - secretRef:
+              name: github
         volumeMounts:
         - name: jenkins-home
           mountPath: /var/jenkins_home/
@@ -227,52 +230,4 @@ data:
         exec java $JAVA_OPTS $JNLP_PROTOCOL_OPTS -cp $SLAVE_JAR hudson.remoting.jnlp.Main -headless $TUNNEL $URL $OPT_JENKINS_SECRET $OPT_JENKINS_AGENT_NAME "$@"
     fi
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jenkins-casc
-data:
-  jenkins-casc.yaml: |
-    jenkins:
-      systemMessage: "Jenkins in Kubernetes configured as code!"
-      clouds:
-      - kubernetes:
-          name: kubernetes
-          containerCapStr: 100
-          templates:
-            - name: jnlp-agent
-              label: jnlp-agent-pod-template
-              containers:
-                - name: jnlp-agent
-                  image: jenkins/jnlp-slave:latest
-                  ttyEnabled: true
-                  command: cat
-                  args: ""
-    # location:
-    #   url: https://cjd.cloudbees.elgin.io
-    # credentials:
-    #   system:
-    #     domainCredentials:
-    #       credentials:
-    #       - string:
-    #           description: "GitHub API token"
-    #           id: "github"
-    #           scope: SYSTEM
-    #           secret: ${github}
-    jobs:
-    - script: >
-        multibranchPipelineJob('cjd-casc') {
-          branchSources {
-            github {
-              
-              repoOwner('mdelgin')
-              repository('cjd-casc')
-            }
-          }
-          orphanedItemStrategy {
-            discardOldItems {
-              numToKeep(5)
-            }
-          }
-        }
+
