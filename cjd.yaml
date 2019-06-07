@@ -18,6 +18,9 @@ rules:
 - apiGroups: [""]
   resources: ["pods/log"]
   verbs: ["get","list","watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -100,6 +103,10 @@ spec:
         env:
         - name: CASC_JENKINS_CONFIG
           value: /var/jenkins_config/jenkins-casc.yaml
+        - name: JAVA_OPTS
+          value: >-
+            -Dhudson.TcpSlaveAgentListener.hostName=cjd.cloudbees.elgin.io
+            -Dhudson.TcpSlaveAgentListener.port=50000
         envFrom:
           - secretRef:
               name: github

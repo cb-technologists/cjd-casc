@@ -6,6 +6,13 @@ metadata:
 data:
   jenkins-casc.yaml: |
     jenkins:
+      agentProtocols:
+      - "Diagnostic-Ping"
+      - "JNLP4-connect"
+      - "Ping"
+      crumbIssuer:
+        standard:
+          excludeClientIPFromCrumb: false
       securityRealm:
         github:
           githubWebUri: "https://github.com"
@@ -18,15 +25,7 @@ data:
       - kubernetes:
           name: kubernetes
           containerCapStr: 100
-          templates:
-            - name: jnlp-agent
-              label: jnlp-agent-pod-template
-              containers:
-                - name: jnlp-agent
-                  image: jenkins/jnlp-slave:latest
-                  ttyEnabled: true
-                  command: cat
-                  args: ""
+          skipTlsVerify: true
       authorizationStrategy:
         loggedInUsersCanDoAnything:
           allowAnonymousRead: false
@@ -59,6 +58,6 @@ data:
     security:
       remotingCLI:
         enabled: false
-    unclassified:
-      location:
-        url: {url}
+    # unclassified:
+    #   location:
+    #     url: {url}
