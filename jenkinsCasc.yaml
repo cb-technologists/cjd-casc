@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-casc
+data:
+  jenkins-casc.yaml: |
+    jenkins:
+      systemMessage: "CJD in Kubernetes configured as code!"
+      clouds:
+      - kubernetes:
+          name: kubernetes
+          containerCapStr: 100
+          templates:
+            - name: jnlp-agent
+              label: jnlp-agent-pod-template
+              containers:
+                - name: jnlp-agent
+                  image: jenkins/jnlp-slave:latest
+                  ttyEnabled: true
+                  command: cat
+                  args: ""
+    credentials:
+      system:
+        domainCredentials:
+          - credentials:
+            - usernamePassword:
+                scope: GLOBAL
+                id: "github"
+                description: "GitHub API token"
+                username: ${username}
+                password: ${token}
+    jobs:
+    - script: >
+        multibranchPipelineJob('cjd-casc') {
+          branchSources {
+            github {
+              scanCredentialsId('github')
+              repoOwner('mdelgin')
+              repository('cjd-casc')
+            }
+          }
+          orphanedItemStrategy {
+            discardOldItems {
+              numToKeep(5)
+            }
+          }
+        }
