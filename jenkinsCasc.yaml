@@ -24,8 +24,8 @@ data:
       clouds:
       - kubernetes:
           name: kubernetes
+          jenkinsUrl: https://cjd.cloudbees.elgin.io
           containerCapStr: 100
-          skipTlsVerify: true
       authorizationStrategy:
         loggedInUsersCanDoAnything:
           allowAnonymousRead: false
