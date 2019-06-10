@@ -45,7 +45,7 @@ data:
           branchSources {
             github {
               scanCredentialsId('github')
-              repoOwner('mdelgin')
+              repoOwner('cb-technologists')
               repository('cjd-casc')
             }
           }
