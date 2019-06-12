@@ -44,7 +44,7 @@ spec:
       steps {
         container('jnlp') {
           script {
-              env.COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
+              env.COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
           }
         }
         container(name: 'kaniko', shell: '/busybox/sh') {
