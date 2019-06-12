@@ -7,7 +7,7 @@ kind: Pod
 metadata:
   name: kaniko-kubectl
 spec:
-  serviceAccountName: jenkins
+  serviceAccountName: cjd
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
@@ -58,6 +58,8 @@ spec:
       steps {
         container('kubectl') {
           sh """
+            kubectl apply -f jenkinsCasc.yaml
+            kubectl apply -f cjd.yaml
             kubectl -n cjd patch statefulset cjd -p '{"spec":{"containers":[{"name":"cjd","image":"mattelgin/cjd-casc:${env.COMMIT_ID}"}]}}'
           """
         }

@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: jenkins
+  name: cjd
 
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  name: jenkins
+  name: cjd
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -24,20 +24,23 @@ rules:
 - apiGroups: ["apps"]
   resources: ["statefulsets"]
   verbs: ["create","delete","get","list","patch","update","watch"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create","delete","get","list","patch","update","watch"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
-  name: jenkins
+  name: cjd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: pods-all
+  name: cjd
   # namespace: cjd
 subjects:
 - kind: ServiceAccount
-  name: jenkins
+  name: cjd
 
 ---
 apiVersion: v1
@@ -121,7 +124,7 @@ spec:
           mountPath: /var/jenkins_config/
       securityContext:
         fsGroup: 1000
-      serviceAccountName: jenkins
+      serviceAccountName: cjd
       volumes:
       - name: jenkins-casc
         configMap:
