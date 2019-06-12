@@ -25,7 +25,7 @@ rules:
   resources: ["statefulsets"]
   verbs: ["create","delete","get","list","patch","update","watch"]
 - apiGroups: ["rbac.authorization.k8s.io"]
-  resources: ["roles,rolebindings"]
+  resources: ["roles","rolebindings"]
   verbs: ["create","delete","get","list","patch","update","watch"]
 - apiGroups: ["extensions"]
   resources: ["ingresses"]
