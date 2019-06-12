@@ -10,7 +10,7 @@ metadata:
   name: cjd
 rules:
 - apiGroups: [""]
-  resources: ["pods"]
+  resources: ["pods","configmaps","services"]
   verbs: ["create","delete","get","list","patch","update","watch"]
 - apiGroups: [""]
   resources: ["pods/exec"]
@@ -24,8 +24,11 @@ rules:
 - apiGroups: ["apps"]
   resources: ["statefulsets"]
   verbs: ["create","delete","get","list","patch","update","watch"]
-- apiGroups: [""]
-  resources: ["configmaps"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles,rolebindings"]
+  verbs: ["create","delete","get","list","patch","update","watch"]
+- apiGroups: ["extensions"]
+  resources: ["ingresses"]
   verbs: ["create","delete","get","list","patch","update","watch"]
 
 ---
