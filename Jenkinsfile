@@ -41,13 +41,12 @@ spec:
         PATH = "/busybox:/kaniko:$PATH"
       }
       steps {
-        container(name: 'kaniko', shell: '/busybox/sh') {
+        container('jnlp') {
           script {
-            env.COMMIT_ID = sh(returnStdout: true, 
-                               script: """#!/busybox/sh
-                                          git rev-parse HEAD
-                               """)
+              env.COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse HEAD')
           }
+        }
+        container(name: 'kaniko', shell: '/busybox/sh') {
           sh """#!/busybox/sh
                 /kaniko/executor --context `pwd` --destination mattelgin/cjd-casc:${env.COMMIT_ID}
           """
