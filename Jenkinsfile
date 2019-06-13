@@ -50,6 +50,10 @@ spec:
       }
     }
     stage('Update CJD') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
       agent {
         kubernetes {
           label "kubectl-${UUID.randomUUID().toString()}"
