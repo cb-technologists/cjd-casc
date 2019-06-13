@@ -58,6 +58,7 @@ data:
     security:
       remotingCLI:
         enabled: false
-    # unclassified:
-    #   location:
-    #     url: {url}
+    unclassified:
+      location:
+        adminAddress: "address not configured yet <nobody@nowhere>"
+        url: "https://cjd.cloudbees.elgin.io/"
