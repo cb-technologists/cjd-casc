@@ -49,12 +49,12 @@ spec:
         }
         container(name: 'kaniko', shell: '/busybox/sh') {
           sh """#!/busybox/sh
-                /kaniko/executor --context `pwd` --destination mattelgin/cjd-casc:${env.COMMIT_ID}
+                /kaniko/executor --context `pwd` --destination mattelgin/cjd-casc:${env.COMMIT_ID} --cache=true
           """
         }
       }
     }
-    stage('Update CJD image') {
+    stage('Update CJD') {
       steps {
         container('kubectl') {
           sh """
