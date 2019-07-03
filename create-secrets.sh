@@ -10,5 +10,5 @@ kubectl create secret generic github-oauth --from-literal=CLIENT_ID=${CLIENT_ID}
 kubectl create secret docker-registry gcr-secret \
     --docker-server=https://gcr.io \
     --docker-username=_json_key \
-    --docker-email=${SERVICE_ACCOUNT@PROJECT.iam.gserviceaccount.com} # replace with service account email \
+    --docker-email=${SERVICE_ACCOUNT@PROJECT.iam.gserviceaccount.com} \
     --docker-password="$(cat kaniko-secret.json)"
