@@ -29,6 +29,9 @@ data:
       authorizationStrategy:
         loggedInUsersCanDoAnything:
           allowAnonymousRead: false
+      remotingSecurity:
+        enabled: false
+      numExecutors: 0
     credentials:
       system:
         domainCredentials:
@@ -55,9 +58,6 @@ data:
             }
           }
         }
-    security:
-      remotingCLI:
-        enabled: false
     unclassified:
       location:
         adminAddress: "address not configured yet <nobody@nowhere>"
