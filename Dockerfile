@@ -1,4 +1,4 @@
-FROM cloudbees/cloudbees-jenkins-distribution:2.164.3.2
+FROM cloudbees/cloudbees-jenkins-distribution:2.176.1.4
 
 LABEL maintainer "melgin@cloudbees.com"
 
