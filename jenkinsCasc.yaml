@@ -62,3 +62,7 @@ data:
       location:
         adminAddress: "address not configured yet <nobody@nowhere>"
         url: "https://cjd.cloudbees.elgin.io/"
+      simple-theme-plugin:
+        elements:
+        - cssUrl:
+            url: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-light-blue.css"

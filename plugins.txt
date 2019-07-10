@@ -1,4 +1,4 @@
-configuration-as-code:1.20
+configuration-as-code:1.23
 job-dsl:1.74
 kubernetes:1.14.9
 kubernetes-credentials:0.4.0
@@ -8,3 +8,4 @@ github-branch-source:2.4.5
 workflow-aggregator:2.5
 blueocean:1.10.2
 github-oauth:0.32
+simple-theme-plugin:0.5.1
