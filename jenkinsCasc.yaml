@@ -20,7 +20,7 @@ data:
           clientID: "${CLIENT_ID}"
           clientSecret: "${CLIENT_SECRET}"
           oauthScopes: "read:org,user:email"
-      systemMessage: "CJD in Kubernetes configured as code!"
+      systemMessage: "CloudBees Jenkins Distribution in Kubernetes configured as code!"
       clouds:
       - kubernetes:
           name: kubernetes
