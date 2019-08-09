@@ -122,7 +122,7 @@ spec:
               name: github-oauth
         volumeMounts:
         - name: jenkins-home
-          mountPath: /var/jenkins_home/
+          mountPath: /var/cloudbees-jenkins-distribution/
         - name: jenkins-casc
           mountPath: /var/jenkins_config/
       securityContext:
