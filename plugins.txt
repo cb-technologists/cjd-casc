@@ -1,6 +1,6 @@
 configuration-as-code:1.23
 job-dsl:1.74
-kubernetes:1.14.9
+kubernetes:1.15.9
 kubernetes-credentials:0.4.0
 credentials:2.2.0
 workflow-multibranch:2.20
