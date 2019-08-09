@@ -1,0 +1,12 @@
+kind: Pod
+metadata:
+  name: kubectl
+spec:
+  serviceAccountName: cjd
+  containers:
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl@sha256:50de93675e6a9e121aad953658b537d01464cba0e4a3c648dbfc89241bb2085e
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true

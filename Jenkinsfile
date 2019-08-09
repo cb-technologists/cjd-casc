@@ -5,32 +5,7 @@ pipeline {
       agent {
         kubernetes {
           label "kaniko-${UUID.randomUUID().toString()}"
-          yaml """
-kind: Pod
-metadata:
-  name: kaniko
-spec:
-  serviceAccountName: cjd
-  containers:
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug-v0.10.0
-    imagePullPolicy: Always
-    command:
-    - /busybox/cat
-    tty: true
-    volumeMounts:
-      - name: jenkins-docker-cfg
-        mountPath: /kaniko/.docker
-  volumes:
-  - name: jenkins-docker-cfg
-    projected:
-      sources:
-      - secret:
-          name: gcr-secret
-          items:
-            - key: .dockerconfigjson
-              path: config.json
-"""
+          yamlFile 'pod-templates/kanikoPod.yaml'
         }
       }
       environment {
@@ -57,20 +32,7 @@ spec:
       agent {
         kubernetes {
           label "kubectl-${UUID.randomUUID().toString()}"
-          yaml """
-kind: Pod
-metadata:
-  name: kubectl
-spec:
-  serviceAccountName: cjd
-  containers:
-  - name: kubectl
-    image: gcr.io/cloud-builders/kubectl@sha256:50de93675e6a9e121aad953658b537d01464cba0e4a3c648dbfc89241bb2085e
-    imagePullPolicy: Always
-    command:
-    - cat
-    tty: true
-"""
+          yamlFile 'pod-templates/kubectlPod.yaml'
         }
       }
       steps {
