@@ -47,6 +47,7 @@ data:
         multibranchPipelineJob('cjd-casc') {
           branchSources {
             github {
+              id('cjd-casc')
               scanCredentialsId('github')
               repoOwner('cb-technologists')
               repository('cjd-casc')
