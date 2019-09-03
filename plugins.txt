@@ -1,5 +1,5 @@
-configuration-as-code:1.27
-job-dsl:1.75
+configuration-as-code:1.29
+job-dsl:1.76
 kubernetes:1.15.9
 kubernetes-credentials:0.4.0
 credentials:2.2.0
