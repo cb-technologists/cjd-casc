@@ -4,7 +4,7 @@ pipeline {
     stage('Build and push with kaniko') {
       agent {
         kubernetes {
-          label "kaniko-${UUID.randomUUID().toString()}"
+          label "kaniko"
           yamlFile 'pod-templates/kanikoPod.yaml'
         }
       }
@@ -31,7 +31,7 @@ pipeline {
       }
       agent {
         kubernetes {
-          label "kubectl-${UUID.randomUUID().toString()}"
+          label "kubectl"
           yamlFile 'pod-templates/kubectlPod.yaml'
         }
       }
