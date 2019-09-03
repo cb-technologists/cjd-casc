@@ -59,6 +59,22 @@ data:
             }
           }
         }
+      - script: >
+        multibranchPipelineJob('img-pipeline') {
+          branchSources {
+            github {
+              id('img-pipeline')
+              scanCredentialsId('github')
+              repoOwner('mdelgin')
+              repository('img-pipeline')
+            }
+          }
+          orphanedItemStrategy {
+            discardOldItems {
+              numToKeep(5)
+            }
+          }
+        }
     unclassified:
       location:
         adminAddress: "address not configured yet <nobody@nowhere>"
