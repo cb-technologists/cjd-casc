@@ -59,7 +59,7 @@ data:
             }
           }
         }
-      - script: >
+    - script: >
         multibranchPipelineJob('img-pipeline') {
           branchSources {
             github {
