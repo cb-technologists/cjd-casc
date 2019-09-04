@@ -47,15 +47,30 @@ pipeline {
       }
     }
     stage('Verify update in Staging') {
+      when {
+        beforeAgent true
+        branch 'staging'
+      }
+      agent none
       input {
         message "Approve update?"
         ok "Yes"
       }
-      post {
-        always {
-          container('kubectl') {
-            sh "kubectl -n cjd-staging delete sts,svc,ing cjd"
-          }
+    }
+    stage('Clean up Staging') {
+      when {
+        beforeAgent true
+        branch 'staging'
+      }
+      agent {
+        kubernetes {
+          label "kubectl"
+          yamlFile 'pod-templates/kubectlPod.yaml'
+        }
+      }
+      steps {
+        container('kubectl') {
+          sh "kubectl -n cjd-staging delete sts,svc,ing cjd"
         }
       }
     }
