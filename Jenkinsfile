@@ -24,6 +24,35 @@ pipeline {
         }
       }
     }
+    stage('Deploy to Staging') {
+      when {
+        beforeAgent true
+        branch 'staging'
+      }
+      agent {
+        kubernetes {
+          label "kubectl"
+          yamlFile 'pod-templates/kubectlPod.yaml'
+        }
+      }
+      steps {
+        container('kubectl') {
+          sh """
+            kubectl -n cjd-staging apply -f jenkinsCascStaging.yaml
+            kubectl -n cjd-staging apply -f cjdStaging.yaml
+            kubectl -n cjd-staging set image statefulset cjd cjd=gcr.io/melgin/cjd-casc:${env.COMMIT_ID}
+          """
+          input message: " http://cjd-staging.cloudbees.elgin.io - update successful?"
+        }
+      }
+      post {
+        always {
+          sh """kubectl -n cjd-staging delete -f jenkinsCascStaging.yaml
+                kubectl -n cjd-staging delete -f cjdStaging.yaml
+          """
+        }
+      }
+    }
     stage('Update CJD') {
       when {
         beforeAgent true
