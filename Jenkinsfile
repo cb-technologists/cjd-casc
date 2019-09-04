@@ -42,14 +42,18 @@ pipeline {
             kubectl -n cjd-staging apply -f cjdStaging.yaml
             kubectl -n cjd-staging set image statefulset cjd cjd=gcr.io/melgin/cjd-casc:${env.COMMIT_ID}
           """
-          input message: " http://cjd-staging.cloudbees.elgin.io - update successful?"
+        }
+        echo "Staging environment available at http://cjd-staging.cloudbees.elgin.io"
+        input {
+          message "Approve update?"
+          ok "Yes"
         }
       }
       post {
         always {
-          sh """kubectl -n cjd-staging delete -f jenkinsCascStaging.yaml
-                kubectl -n cjd-staging delete -f cjdStaging.yaml
-          """
+          container('kubectl') {
+            sh "kubectl -n cjd-staging delete sts,svc,ing cjd"
+          }
         }
       }
     }
