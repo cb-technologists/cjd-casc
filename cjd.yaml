@@ -116,17 +116,15 @@ spec:
         - name: JAVA_OPTS
           value: >-
             -Dcom.cloudbees.jenkins.cjp.installmanager.CJPPluginManager.allRequired=true
-            -Djenkins.install.runSetupWizard=false"
+            -Djenkins.install.runSetupWizard=false
         envFrom:
           - secretRef:
               name: github
           - secretRef:
-              name: url
-          - secretRef:
               name: github-oauth
         volumeMounts:
         - name: jenkins-home
-          mountPath: /var/cloudbees-jenkins-distribution/
+          mountPath: /var/jenkins_home/
         - name: jenkins-casc
           mountPath: /var/jenkins_config/
       securityContext:
