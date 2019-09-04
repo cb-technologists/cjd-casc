@@ -44,10 +44,10 @@ pipeline {
           """
         }
         echo "Staging environment available at http://cjd-staging.cloudbees.elgin.io"
-        input {
-          message "Approve update?"
-          ok "Yes"
-        }
+      }
+      input {
+        message "Approve update?"
+        ok "Yes"
       }
       post {
         always {
