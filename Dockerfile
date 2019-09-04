@@ -16,12 +16,9 @@ ENV CASC_JENKINS_CONFIG /var/jenkins_config/jenkins-casc.yaml
 
 # Install plugins
 ADD https://raw.githubusercontent.com/jenkinsci/docker/master/install-plugins.sh /usr/local/bin/install-plugins.sh
-RUN sed -i 's:/usr/share/jenkins/jenkins.war:/usr/share/cloudbees-jenkins-distribution/cloudbees-jenkins-distribution.war:g' /usr/local/bin/install-plugins.sh
-RUN sed -i 's:/usr/share/jenkins/ref/plugins:/usr/share/cloudbees-jenkins-distribution/ref/plugins:g' /usr/local/bin/install-plugins.sh
 RUN chmod 755 /usr/local/bin/install-plugins.sh
 
 ADD https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins-support /usr/local/bin/jenkins-support
-RUN sed -i 's/rel="${b:23}"/rel="${b:46}"/g' /usr/local/bin/jenkins-support
 RUN chmod 755 /usr/local/bin/jenkins-support
 
 COPY plugins.txt /usr/share/cloudbees-jenkins-distribution/ref/plugins.txt
