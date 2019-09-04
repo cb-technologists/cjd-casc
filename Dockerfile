@@ -1,27 +1,9 @@
-FROM cloudbees/cloudbees-jenkins-distribution:2.176.3.2
+FROM cloudbees/cloudbees-jenkins-distribution:2.176.3.2 as war_source
 
-LABEL maintainer "melgin@cloudbees.com"
+FROM jenkins/jenkins:2.176.3
 
-ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
-
-USER root
-
-RUN echo 2.0 > /usr/share/cloudbees-jenkins-distribution/ref/jenkins.install.UpgradeWizard.state
-
-ENV TZ="/usr/share/zoneinfo/America/New_York"
+COPY --from=war_source /usr/share/cloudbees-jenkins-distribution/cloudbees-jenkins-distribution.war /usr/share/jenkins/jenkins.war
 
 ENV JENKINS_UC https://jenkins-updates.cloudbees.com
-# add environment variable to point to configuration file
-ENV CASC_JENKINS_CONFIG /var/jenkins_config/jenkins-casc.yaml
-
-# Install plugins
-ADD https://raw.githubusercontent.com/jenkinsci/docker/master/install-plugins.sh /usr/local/bin/install-plugins.sh
-RUN chmod 755 /usr/local/bin/install-plugins.sh
-
-ADD https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins-support /usr/local/bin/jenkins-support
-RUN chmod 755 /usr/local/bin/jenkins-support
-
-COPY plugins.txt /usr/share/cloudbees-jenkins-distribution/ref/plugins.txt
-RUN bash /usr/local/bin/install-plugins.sh < /usr/share/cloudbees-jenkins-distribution/ref/plugins.txt
-
-USER cloudbees-jenkins-distribution
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN bash /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt

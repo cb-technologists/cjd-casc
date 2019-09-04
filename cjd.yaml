@@ -113,6 +113,10 @@ spec:
         env:
         - name: CASC_JENKINS_CONFIG
           value: /var/jenkins_config/jenkins-casc.yaml
+        - name: JAVA_OPTS
+          value: >-
+            -Dcom.cloudbees.jenkins.cjp.installmanager.CJPPluginManager.allRequired=true
+            -Djenkins.install.runSetupWizard=false"
         envFrom:
           - secretRef:
               name: github
