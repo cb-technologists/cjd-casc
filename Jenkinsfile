@@ -45,6 +45,8 @@ pipeline {
         }
         echo "Staging environment available at http://cjd-staging.cloudbees.elgin.io"
       }
+    }
+    stage('Verify update in Staging') {
       input {
         message "Approve update?"
         ok "Yes"
