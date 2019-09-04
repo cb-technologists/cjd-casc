@@ -44,34 +44,13 @@ pipeline {
           """
         }
         echo "Staging environment available at http://cjd-staging.cloudbees.elgin.io"
+        input message: "Approve update?"
       }
-    }
-    stage('Verify update in Staging') {
-      when {
-        branch 'staging'
-      }
-      agent none
-      steps {
-        input {
-          message "Approve update?"
-          ok "Yes"
-        }
-      }
-    }
-    stage('Clean up Staging') {
-      when {
-        beforeAgent true
-        branch 'staging'
-      }
-      agent {
-        kubernetes {
-          label "kubectl"
-          yamlFile 'pod-templates/kubectlPod.yaml'
-        }
-      }
-      steps {
-        container('kubectl') {
-          sh "kubectl -n cjd-staging delete sts,svc,ing cjd"
+      post {
+        always {
+          container('kubectl') {
+            sh "kubectl -n cjd-staging delete sts,svc,ing cjd"
+          }
         }
       }
     }
