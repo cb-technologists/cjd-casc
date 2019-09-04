@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: cjd
-        image: gcr.io/melgin/cjd-casc:d176f38b289d0437a2503c83af473f57b25a4d26
+        image: gcr.io/melgin/cjd-casc:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

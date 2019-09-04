@@ -10,3 +10,4 @@ blueocean:1.10.2
 github-oauth:0.33
 simple-theme-plugin:0.5.1
 embeddable-build-status:2.0.2
+script-security:1.61
