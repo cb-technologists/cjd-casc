@@ -48,13 +48,14 @@ pipeline {
     }
     stage('Verify update in Staging') {
       when {
-        beforeAgent true
         branch 'staging'
       }
       agent none
-      input {
-        message "Approve update?"
-        ok "Yes"
+      steps {
+        input {
+          message "Approve update?"
+          ok "Yes"
+        }
       }
     }
     stage('Clean up Staging') {
