@@ -37,7 +37,10 @@ pipeline {
       }
       steps {
         container('kubectl') {
-          sh './update-yaml-for-staging.sh'
+          sh """
+            chmod +x ./update-yaml-for-staging.sh
+            ./update-yaml-for-staging.sh
+          """
           sh """
             kubectl -n cjd-staging apply -f jenkinsCasc.yaml
             kubectl -n cjd-staging apply -f cjd.yaml
