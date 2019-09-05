@@ -1,0 +1,13 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: cjd-cross-ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cjd
+subjects:
+- kind: ServiceAccount
+  name: cjd
+  namespace: cjd

@@ -37,9 +37,10 @@ pipeline {
       }
       steps {
         container('kubectl') {
+          sh './update-yaml-for-staging.sh'
           sh """
-            kubectl -n cjd-staging apply -f jenkinsCascStaging.yaml
-            kubectl -n cjd-staging apply -f cjdStaging.yaml
+            kubectl -n cjd-staging apply -f jenkinsCasc.yaml
+            kubectl -n cjd-staging apply -f cjd.yaml
             kubectl -n cjd-staging set image statefulset cjd cjd=gcr.io/melgin/cjd-casc:${env.COMMIT_ID}
           """
         }
