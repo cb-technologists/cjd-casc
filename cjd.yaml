@@ -72,8 +72,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    certmanager.k8s.io/issuer: "letsencrypt-prod" # add after cert-manager deploy
-    certmanager.k8s.io/acme-challenge-type: http01 # add after cert-manager deploy
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # add after cert-manager deploy
 spec:
   tls: # cert-manager
   - hosts: # cert-manager
